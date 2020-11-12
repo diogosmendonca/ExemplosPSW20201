@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { useHistory } from "react-router-dom";
 import {useDispatch} from 'react-redux';
+import {addProjeto} from './ProjetosSlice'
 
 export default function FormProjeto(props){
 
@@ -15,7 +16,7 @@ export default function FormProjeto(props){
 
     function handleSubmit(e){
         e.preventDefault();
-        dispatch({type: 'add_project', payload: projeto})
+        dispatch(addProjeto(projeto));
         history.push('/projetos');
     }
     

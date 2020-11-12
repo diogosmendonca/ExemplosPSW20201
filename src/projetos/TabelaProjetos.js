@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link } from "react-router-dom";
 import {useSelector, useDispatch} from 'react-redux';
+import {deleteProjeto} from './ProjetosSlice'
 
 export default function ListagemProjeto(props){
   
@@ -9,7 +10,7 @@ export default function ListagemProjeto(props){
 
 
   function handleClickExcluirProjeto(id){
-        dispatch({type: 'delete_project', payload:id})
+        dispatch(deleteProjeto(id));
   }
   
   

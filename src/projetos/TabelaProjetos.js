@@ -1,38 +1,23 @@
 import React from 'react';
 import {Link } from "react-router-dom";
+import {useSelector, useDispatch} from 'react-redux';
 
 export default function ListagemProjeto(props){
   
+  const projetos = useSelector(state => state.projetos);
+  const dispatch = useDispatch();
+
+
   function handleClickExcluirProjeto(id){
-        props.dispatch({type: 'delete_project', payload:id})
+        dispatch({type: 'delete_project', payload:id})
   }
   
-  /*
-  useEffect(()=>{
-    setTimeout(()=>{setProjetos(projetos.concat({nome: 'Proj 3', sigla: 'P3'}))}, 2000);
-  })
-  */
-
-  /*
-  componentDidMount(){
-    console.log('componentDidMount ListagemProjeto');
-  }
-  
-  componentDidUpdate(){
-    console.log('componentDidUpdate ListagemProjeto');
-    alert('O componente foi atualizado!');
-  }
-
-  componentWillUnmount(){
-    console.log('componentWillUnmount ListagemProjeto');
-  }
-*/
   
   return (
             <>
               <div id="lbl_titulo_pagina">Listagem de Projetos</div><br/>
               <Link to="/projetos/novo"><button id="Novo Projeto" name="btn_novo_projeto">Novo Projeto</button></Link><br/><br/>
-              <TabelaProjetos projetos={props.projetos} onClickExcluirProjeto={handleClickExcluirProjeto} />
+              <TabelaProjetos projetos={projetos} onClickExcluirProjeto={handleClickExcluirProjeto} />
             </>
         );
   

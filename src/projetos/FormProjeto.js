@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import { useHistory } from "react-router-dom";
+import {useDispatch} from 'react-redux';
 
 export default function FormProjeto(props){
 
     const [projeto, setProjeto] = useState({});
     const history = useHistory();
+
+    const dispatch = useDispatch()
 
     function handleInputChange(e) {
         setProjeto( {...projeto, [e.target.name]: e.target.value} );
@@ -12,7 +15,7 @@ export default function FormProjeto(props){
 
     function handleSubmit(e){
         e.preventDefault();
-        props.dispatch({type: 'add_project', payload: projeto})
+        dispatch({type: 'add_project', payload: projeto})
         history.push('/projetos');
     }
     

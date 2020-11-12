@@ -26,7 +26,7 @@ export default function ListagemProjeto(props){
 
 const LinhaProjeto = (props) => {
     return(
-        <tr><td>{props.projeto.nome}</td>
+        <tr><td><Link to={`/projetos/${props.projeto.id}`}><button>{props.projeto.nome}</button></Link></td>
             <td>{props.projeto.sigla}</td>
             <td><button id="excluir_projeto" name="excluir_projeto" onClick={() => props.onClickExcluirProjeto(props.projeto.id)}>X</button></td>
         </tr>

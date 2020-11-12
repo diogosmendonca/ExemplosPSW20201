@@ -26,6 +26,7 @@ const App = (props) => {
                     </nav>
                     <Switch>
                       <Route path="/projetos/novo"><FormProjeto /></Route>
+                      <Route path="/projetos/:id"><FormProjeto /></Route>
                       <Route path="/projetos"><ListagemProjeto /></Route>
                       <Route path="/"><ListagemProjeto /></Route>
                     </Switch>

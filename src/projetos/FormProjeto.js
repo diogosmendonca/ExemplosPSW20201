@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
+import { useHistory } from "react-router-dom";
 
 export default function FormProjeto(props){
 
     const [projeto, setProjeto] = useState({});
+    const history = useHistory();
 
     function handleInputChange(e) {
         setProjeto( {...projeto, [e.target.name]: e.target.value} );
@@ -10,7 +12,8 @@ export default function FormProjeto(props){
 
     function handleSubmit(e){
         e.preventDefault();
-        props.setProjetos(props.projetos.concat(projeto));
+        props.dispatch({type: 'add_project', payload: projeto})
+        history.push('/projetos');
     }
     
     useEffect(() =>  {document.title = 

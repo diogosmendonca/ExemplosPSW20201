@@ -3,8 +3,8 @@ import {Link } from "react-router-dom";
 
 export default function ListagemProjeto(props){
   
-  function handleClickExcluirProjeto(nome){
-        props.setProjetos(props.projetos.filter((value) => value.nome !== nome));
+  function handleClickExcluirProjeto(id){
+        props.dispatch({type: 'delete_project', payload:id})
   }
   
   /*
@@ -42,7 +42,7 @@ const LinhaProjeto = (props) => {
     return(
         <tr><td>{props.projeto.nome}</td>
             <td>{props.projeto.sigla}</td>
-            <td><button id="excluir_projeto" name="excluir_projeto" onClick={() => props.onClickExcluirProjeto(props.projeto.nome)}>X</button></td>
+            <td><button id="excluir_projeto" name="excluir_projeto" onClick={() => props.onClickExcluirProjeto(props.projeto.id)}>X</button></td>
         </tr>
     );
 }
@@ -51,7 +51,7 @@ function TabelaProjetos(props){
     return(
         <table id="projetos" border="1">
             <tbody>
-              {props.projetos.map((projeto) => <LinhaProjeto key={projeto.nome} projeto={projeto} 
+              {props.projetos.map((projeto) => <LinhaProjeto key={projeto.id} projeto={projeto} 
               onClickExcluirProjeto={props.onClickExcluirProjeto} />)}
             </tbody>
         </table>

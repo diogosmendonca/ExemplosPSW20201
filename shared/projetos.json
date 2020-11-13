@@ -1,0 +1,5 @@
+{
+    "projetos": [{"id": 1, "nome": "Projeto X", "sigla": "123"},
+        {"id": 2, "nome": "Projeto Y", "sigla": "456"},
+        {"id": 3, "nome": "Projeto Z", "sigla": "789"}]
+}

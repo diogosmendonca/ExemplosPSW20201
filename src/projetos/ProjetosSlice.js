@@ -1,7 +1,6 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
   
-const initialProjects = [{id: 1, nome: 'Pro 1', sigla: 'P1'},
-                        {id: 2, nome: 'Pro 2', sigla: 'P2'}];
+const initialProjects = [];
 
 function addProjetoReducer(projetos, projeto){
     let proxId = 1 + projetos.map(p => p.id).reduce((x, y) => Math.max(x,y));
@@ -18,6 +17,17 @@ function  updateProjetoReducer(projetos, projeto){
     return projetos;
 }
 
+export const fetchProjetos = createAsyncThunk('projetos/fetchProjetos', 
+    async () => {
+        return await (await fetch('http://localhost:3004/projetos')).json();
+});
+
+
+function fullfillProjetosReducer(projetosState, projetosFetched){
+    return projetosFetched;
+}
+
+
 export const projetosSlice = createSlice({
     name: 'projetos',
     initialState: initialProjects,
@@ -25,7 +35,10 @@ export const projetosSlice = createSlice({
        addProjeto: (state, action) => addProjetoReducer(state, action.payload),
        updateProjeto: (state, action) => updateProjetoReducer(state, action.payload),
        deleteProjeto: (state, action) => deleteProjetoReducer(state, action.payload)
-    }
+    },
+    extraReducers: {
+       [fetchProjetos.fulfilled]: (state, action) => fullfillProjetosReducer(state, action.payload),
+    },
 })
 
 export const { addProjeto, updateProjeto, deleteProjeto } = projetosSlice.actions

@@ -3,6 +3,7 @@ import ListagemProjeto from './projetos/TabelaProjetos';
 import FormProjeto from './projetos/FormProjeto';
 import {store} from './store';
 import { Provider } from 'react-redux'
+import {fetchProjetos} from './projetos/ProjetosSlice'
 
 import {
     BrowserRouter as Router,
@@ -10,6 +11,8 @@ import {
     Route,
     Link
   } from "react-router-dom"; 
+
+store.dispatch(fetchProjetos());
 
 const App = (props) => {
 

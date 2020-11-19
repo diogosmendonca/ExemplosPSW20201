@@ -13,7 +13,6 @@ export default function ListagemProjeto(props){
         dispatch(deleteProjeto(id));
   }
   
-  
   return (
             <>
               <div id="lbl_titulo_pagina">Listagem de Projetos</div><br/>
@@ -21,26 +20,33 @@ export default function ListagemProjeto(props){
               <TabelaProjetos projetos={projetos} onClickExcluirProjeto={handleClickExcluirProjeto} />
             </>
         );
-  
 }
 
-const LinhaProjeto = (props) => {
-    return(
-        <tr><td><Link to={`/projetos/${props.projeto.id}`}><button>{props.projeto.nome}</button></Link></td>
-            <td>{props.projeto.sigla}</td>
-            <td><button id="excluir_projeto" name="excluir_projeto" onClick={() => props.onClickExcluirProjeto(props.projeto.id)}>X</button></td>
-        </tr>
-    );
+export const LinhaProjeto = (props) => {
+    if(props != null && props.projeto != null && props.projeto.id != null){
+      return(
+          <tr><td><Link to={`/projetos/${props.projeto.id}`}><button>{props.projeto.nome}</button></Link></td>
+              <td>{props.projeto.sigla}</td>
+              <td><button id="excluir_projeto" name="excluir_projeto" onClick={() => props.onClickExcluirProjeto(props.projeto.id)}>X</button></td>
+          </tr>
+      );
+    }else{
+      return(<tr><td colSpan={3}>Não foi possível exibir o projeto.</td></tr>)
+    }
 }
 
-function TabelaProjetos(props){
-    return(
-        <table id="projetos" border="1">
-            <tbody>
-              {props.projetos.map((projeto) => <LinhaProjeto key={projeto.id} projeto={projeto} 
-              onClickExcluirProjeto={props.onClickExcluirProjeto} />)}
-            </tbody>
-        </table>
-    );
+export function TabelaProjetos(props){
+    if(props != null && props.projetos != null && props.projetos.length > 0){
+      return(
+          <table id="projetos" border="1">
+              <tbody>
+                {props.projetos.map((projeto) => <LinhaProjeto key={projeto.id} projeto={projeto} 
+                onClickExcluirProjeto={props.onClickExcluirProjeto} />)}
+              </tbody>
+          </table>
+      );
+    }else{
+      return(<div>Não existem projetos a serem exibidos.</div>)
+    }
 }
 

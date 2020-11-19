@@ -58,5 +58,5 @@ export default function FormProjeto(props){
             <input type="submit" value="Salvar" />
             </form>
           </>
-);
+    );
 }

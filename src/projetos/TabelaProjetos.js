@@ -1,24 +1,32 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link } from "react-router-dom";
 import {useSelector, useDispatch} from 'react-redux';
-import {deleteProjeto} from './ProjetosSlice'
+import {deleteProjetoServer, fetchProjetos, selectAllProjetos} from './ProjetosSlice'
 
 export default function ListagemProjeto(props){
   
-  const projetosState = useSelector(state => state.projetos);
-  const projetos = projetosState.projetos;
-  const status = projetosState.status;
-  const error = projetosState.error;
+  const projetos = useSelector(selectAllProjetos)
+  const status = useSelector(state => state.projetos.status);
+  const error = useSelector(state => state.projetos.error);
 
   const dispatch = useDispatch();
 
 
   function handleClickExcluirProjeto(id){
-        dispatch(deleteProjeto(id));
+        dispatch(deleteProjetoServer(id));
   }
+
+   useEffect(() => {
+        if (status === 'not_loaded' ) {
+            dispatch(fetchProjetos())
+        }else if(status === 'failed'){
+            setTimeout(()=>dispatch(fetchProjetos()), 5000);
+        }
+    }, [status, dispatch])
+    
   
   let tabelaProjetos = '';
-  if(status === 'loaded'){
+  if(status === 'loaded' || status === 'saved' || status === 'deleted'){
     tabelaProjetos = <TabelaProjetos projetos={projetos} onClickExcluirProjeto={handleClickExcluirProjeto} />;
   }else if(status === 'loading'){
     tabelaProjetos = <div>Carregando os projetos...</div>;

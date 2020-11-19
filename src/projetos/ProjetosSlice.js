@@ -1,54 +1,53 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-  
+import {createSlice, createAsyncThunk, createEntityAdapter} from '@reduxjs/toolkit'
+import {httpDelete, httpGet, httpPut, httpPost} from '../utils'
+import {baseUrl} from '../baseUrl'
 
-const initialState = {
-        status: 'not_loaded',
-        projetos: [],
-        error: null
-    };
-    
+const projetosAdapter = createEntityAdapter();
 
-function addProjetoReducer(state, projeto){
-    let proxId = 1 + state.projetos.map(p => p.id).reduce((x, y) => Math.max(x,y));
-    state.projetos = state.projetos.concat([{...projeto, id: proxId}]);
-}
-
-function deleteProjetoReducer(state, id){
-    state.projetos = state.projetos.filter((p) => p.id !== id);
-}
-
-function  updateProjetoReducer(state, projeto){
-    let index = state.projetos.map(p => p.id).indexOf(projeto.id);
-    state.projetos.splice(index, 1, projeto);
-}
-
-export const fetchProjetos = createAsyncThunk('projetos/fetchProjetos', 
-    async () => {
-        return await (await fetch('http://localhost:3004/projetos')).json();
+const initialState = projetosAdapter.getInitialState({
+    status: 'not_loaded',
+    error: null
+    /* o array projetos foi removido do state inicial, será criado pelo adapter */
 });
 
+export const fetchProjetos = createAsyncThunk('projetos/fetchProjetos', async () => {
+    return await httpGet(`${baseUrl}/projetos`);
+});
 
-function fullfillProjetosReducer(projetosState, projetosFetched){
-    projetosState.status = 'loaded';
-    projetosState.projetos = projetosFetched;
-}
+export const deleteProjetoServer = createAsyncThunk('projetos/deleteProjetoServer', async (idProjeto) => {
+    await httpDelete(`${baseUrl}/projetos/${idProjeto}`);
+    return idProjeto;
+});
 
+export const addProjetoServer = createAsyncThunk('projetos/addProjetoServer', async (projeto) => {
+    return await httpPost(`${baseUrl}/projetos`, projeto);
+});
+
+export const updateProjetoServer = createAsyncThunk('projetos/updateProjetoServer', async (projeto) => {
+    return await httpPut(`${baseUrl}/projetos/${projeto.id}`, projeto);
+});
 
 export const projetosSlice = createSlice({
     name: 'projetos',
     initialState: initialState,
-    reducers: {
-       addProjeto: (state, action) => addProjetoReducer(state, action.payload),
-       updateProjeto: (state, action) => updateProjetoReducer(state, action.payload),
-       deleteProjeto: (state, action) => deleteProjetoReducer(state, action.payload)
-    },
     extraReducers: {
        [fetchProjetos.pending]: (state, action) => {state.status = 'loading'},
-       [fetchProjetos.fulfilled]: (state, action) => fullfillProjetosReducer(state, action.payload),
-       [fetchProjetos.rejected]: (state, action) => {state.status = 'failed'; state.error = action.error.message}
+       [fetchProjetos.fulfilled]: (state, action) => {state.status = 'loaded'; projetosAdapter.setAll(state, action.payload);},
+       [fetchProjetos.rejected]: (state, action) => {state.status = 'failed'; state.error = action.error.message},
+       [deleteProjetoServer.pending]: (state, action) => {state.status = 'loading'},
+       [deleteProjetoServer.fulfilled]: (state, action) => {state.status = 'deleted'; projetosAdapter.removeOne(state, action.payload);},
+       [addProjetoServer.pending]: (state, action) => {state.status = 'loading'},
+       [addProjetoServer.fulfilled]: (state, action) => {state.status = 'saved'; projetosAdapter.addOne(state, action.payload);},
+       [updateProjetoServer.pending]: (state, action) => {state.status = 'loading'},
+       [updateProjetoServer.fulfilled]: (state, action) => {state.status = 'saved'; projetosAdapter.upsertOne(state, action.payload);},
     },
 })
 
-export const { addProjeto, updateProjeto, deleteProjeto } = projetosSlice.actions
 export default projetosSlice.reducer
+
+export const {
+    selectAll: selectAllProjetos,
+    selectById: selectProjetosById,
+    selectIds: selectProjetosIds
+} = projetosAdapter.getSelectors(state => state.projetos)
     

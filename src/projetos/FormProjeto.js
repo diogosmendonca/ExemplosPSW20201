@@ -1,22 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import { useParams, useHistory } from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux';
-import {addProjeto, updateProjeto} from './ProjetosSlice'
+import {addProjetoServer, updateProjetoServer, selectProjetosById} from './ProjetosSlice'
 
 export default function FormProjeto(props){
 
-    const projetos = useSelector(state => state.projetos.projetos)
     const history = useHistory();
     const dispatch = useDispatch()
     let { id } = useParams();
     id = parseInt(id);
+    const projetoFound = useSelector(state => selectProjetosById(state, id))
 
     const [projeto, setProjeto] = useState(
-        id ? projetos.filter((p) => p.id === id)[0] ?? {} : {});
+        id ? projetoFound ?? {} : {});
 
     const [actionType, ] = useState(
-        id ? 
-            projetos.filter((p) => p.id === id)[0] 
+        id ? projetoFound 
                 ? 'projetos/updateProjeto'
                 : 'projetos/addProjeto'
                 : 'projetos/addProjeto');
@@ -28,9 +27,9 @@ export default function FormProjeto(props){
     function handleSubmit(e){
         e.preventDefault();
         if(actionType === 'projetos/addProjeto'){
-            dispatch(addProjeto(projeto));
+            dispatch(addProjetoServer(projeto));
         }else{
-            dispatch(updateProjeto(projeto));
+            dispatch(updateProjetoServer(projeto));
         }
         
         history.push('/projetos');

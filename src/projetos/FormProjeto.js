@@ -5,7 +5,7 @@ import {addProjeto, updateProjeto} from './ProjetosSlice'
 
 export default function FormProjeto(props){
 
-    const projetos = useSelector(state => state.projetos)
+    const projetos = useSelector(state => state.projetos.projetos)
     const history = useHistory();
     const dispatch = useDispatch()
     let { id } = useParams();

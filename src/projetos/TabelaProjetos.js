@@ -5,7 +5,11 @@ import {deleteProjeto} from './ProjetosSlice'
 
 export default function ListagemProjeto(props){
   
-  const projetos = useSelector(state => state.projetos);
+  const projetosState = useSelector(state => state.projetos);
+  const projetos = projetosState.projetos;
+  const status = projetosState.status;
+  const error = projetosState.error;
+
   const dispatch = useDispatch();
 
 
@@ -13,11 +17,20 @@ export default function ListagemProjeto(props){
         dispatch(deleteProjeto(id));
   }
   
+  let tabelaProjetos = '';
+  if(status === 'loaded'){
+    tabelaProjetos = <TabelaProjetos projetos={projetos} onClickExcluirProjeto={handleClickExcluirProjeto} />;
+  }else if(status === 'loading'){
+    tabelaProjetos = <div>Carregando os projetos...</div>;
+  }else if(status === 'failed'){
+    tabelaProjetos = <div>Error: {error}</div>;
+  }
+
   return (
             <>
               <div id="lbl_titulo_pagina">Listagem de Projetos</div><br/>
               <Link to="/projetos/novo"><button id="Novo Projeto" name="btn_novo_projeto">Novo Projeto</button></Link><br/><br/>
-              <TabelaProjetos projetos={projetos} onClickExcluirProjeto={handleClickExcluirProjeto} />
+              {tabelaProjetos}
             </>
         );
 }

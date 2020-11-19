@@ -1,20 +1,25 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
   
-const initialProjects = [];
 
-function addProjetoReducer(projetos, projeto){
-    let proxId = 1 + projetos.map(p => p.id).reduce((x, y) => Math.max(x,y));
-    return projetos.concat([{...projeto, id: proxId}]);
+const initialState = {
+        status: 'not_loaded',
+        projetos: [],
+        error: null
+    };
+    
+
+function addProjetoReducer(state, projeto){
+    let proxId = 1 + state.projetos.map(p => p.id).reduce((x, y) => Math.max(x,y));
+    state.projetos = state.projetos.concat([{...projeto, id: proxId}]);
 }
 
-function deleteProjetoReducer(projetos, id){
-    return projetos.filter((p) => p.id !== id);
+function deleteProjetoReducer(state, id){
+    state.projetos = state.projetos.filter((p) => p.id !== id);
 }
 
-function  updateProjetoReducer(projetos, projeto){
-    let index = projetos.map(p => p.id).indexOf(projeto.id);
-    projetos.splice(index, 1, projeto);
-    return projetos;
+function  updateProjetoReducer(state, projeto){
+    let index = state.projetos.map(p => p.id).indexOf(projeto.id);
+    state.projetos.splice(index, 1, projeto);
 }
 
 export const fetchProjetos = createAsyncThunk('projetos/fetchProjetos', 
@@ -24,20 +29,23 @@ export const fetchProjetos = createAsyncThunk('projetos/fetchProjetos', 
 
 
 function fullfillProjetosReducer(projetosState, projetosFetched){
-    return projetosFetched;
+    projetosState.status = 'loaded';
+    projetosState.projetos = projetosFetched;
 }
 
 
 export const projetosSlice = createSlice({
     name: 'projetos',
-    initialState: initialProjects,
+    initialState: initialState,
     reducers: {
        addProjeto: (state, action) => addProjetoReducer(state, action.payload),
        updateProjeto: (state, action) => updateProjetoReducer(state, action.payload),
        deleteProjeto: (state, action) => deleteProjetoReducer(state, action.payload)
     },
     extraReducers: {
+       [fetchProjetos.pending]: (state, action) => {state.status = 'loading'},
        [fetchProjetos.fulfilled]: (state, action) => fullfillProjetosReducer(state, action.payload),
+       [fetchProjetos.rejected]: (state, action) => {state.status = 'failed'; state.error = action.error.message}
     },
 })
 

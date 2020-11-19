@@ -15,6 +15,7 @@ describe('TabelaProjeto', function () {
     test('projetos vazio', () => {
         render(<TabelaProjetos projetos={[]}  />);
         expect(screen.getByText(/Não existem projetos a serem exibidos./i)).toBeInTheDocument()
+        
     });
 
     //######## TABELA PROJETOS INTEGRAÇÃO #################################
@@ -43,6 +44,7 @@ describe('TabelaProjeto', function () {
         for(let i = 1; i < 10; i++){
             expect(screen.getByText("Projeto " + i)).toBeInTheDocument();
             expect(screen.getByText("P" + i)).toBeInTheDocument();
+
         }
     });
 

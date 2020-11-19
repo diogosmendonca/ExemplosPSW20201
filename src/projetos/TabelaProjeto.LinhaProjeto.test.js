@@ -8,37 +8,42 @@ import { MemoryRouter } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
 
 //######## LINHA PROJETO UNITÁRIO #################################
-describe('test LinhaProjeto', function () {
-    test('LinhaProjeto props vazio', () => {
-        render(<LinhaProjeto />);
+describe('LinhaProjeto', function () {
+
+    test('props vazio', () => {
+        render(<table><tbody><LinhaProjeto /></tbody></table>);
         expect(screen.getByText(/Não foi possível exibir o projeto./i)).toBeInTheDocument()
     });
 
-    test('LinhaProjeto projeto sem id', () => {
-        render(<LinhaProjeto projeto={{}} />, { wrapper: MemoryRouter });
+    test('projeto sem id', () => {
+        render(<table><tbody><LinhaProjeto projeto={{}} /></tbody></table>);
         expect(screen.getByText(/Não foi possível exibir o projeto./i)).toBeInTheDocument()
     });
 
-    test('LinhaProjeto projeto sem nome e sem sigla', () => {
-        render(<LinhaProjeto projeto={{id: 1}} />, { wrapper: MemoryRouter });
+    test('projeto sem nome e sem sigla', () => {
+        render(<table><tbody><LinhaProjeto projeto={{id: 1}} /></tbody></table>, { wrapper: MemoryRouter });
         expect(screen.queryByText(/undefined./i)).not.toBeInTheDocument();
     });
 
-    test('LinhaProjeto projeto click editar', () => {
+    test('projeto com nome e com sigla', () => {
+        render(<table><tbody><LinhaProjeto projeto={{id: 1, nome: 'Projeto 1', sigla: 'P1'}} /></tbody></table>, { wrapper: MemoryRouter });
+        expect(screen.queryByText(/Projeto 1/i)).toBeInTheDocument();
+        expect(screen.queryByText(/P1/i)).toBeInTheDocument();
+    });
+
+    test('projeto click editar', () => {
         const history = createMemoryHistory();
         let projeto = {id: 1, nome: 'Projeto 1'};
-        render(<Router history={history}><LinhaProjeto projeto={projeto} /></Router>);
+        render(<Router history={history}><table><tbody><LinhaProjeto projeto={projeto} /></tbody></table></Router>);
         const leftClick = { button: 0 };
         userEvent.click(screen.getByText(/Projeto 1/i), leftClick);
         expect(history.location.pathname).toBe('/projetos/1');
     });
 
-    test('LinhaProjeto projeto click excluir', () => {
+    test('projeto click excluir', () => {
         const mockExcluirHandler = jest.fn();
-        const history = createMemoryHistory();
         let projeto = {id: 1, nome: 'Projeto 1'};
-        render(<Router history={history}><LinhaProjeto projeto={projeto} 
-            onClickExcluirProjeto={mockExcluirHandler} /></Router>);
+        render(<table><tbody><LinhaProjeto projeto={projeto} onClickExcluirProjeto={mockExcluirHandler} /></tbody></table>, { wrapper: MemoryRouter });
         const leftClick = { button: 0 };
         userEvent.click(screen.getByText(/X/i), leftClick);
         expect(mockExcluirHandler).toHaveBeenCalledTimes(1);

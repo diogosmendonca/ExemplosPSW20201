@@ -4,7 +4,7 @@ import {baseUrl} from '../baseUrl'
 
 const projetosAdapter = createEntityAdapter();
 
-const initialState = projetosAdapter.getInitialState({
+const initialState = projetosAdapter.getInitialState({
     status: 'not_loaded',
     error: null
     /* o array projetos foi removido do state inicial, será criado pelo adapter */

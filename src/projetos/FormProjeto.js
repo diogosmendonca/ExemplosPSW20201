@@ -5,6 +5,7 @@ import {addProjetoServer, updateProjetoServer, selectProjetosById} from './Proje
 import {projetoSchema} from './ProjetoSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from "react-hook-form";
+import Button from '@material-ui/core/Button';
 
 
 export default function FormProjeto(props){
@@ -54,7 +55,8 @@ export default function FormProjeto(props){
                 &nbsp;<span>{errors.sigla?.message}</span>
             </label>
             <br/>
-            <input type="submit" value="Salvar" />
+            <br/>   
+            <Button type="submit" id="Salvar" name="btn_salvar_projeto" variant="contained" color="primary">Salvar</Button>
             </form>
           </>
     );

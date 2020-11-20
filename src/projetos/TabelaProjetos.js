@@ -2,6 +2,25 @@ import React, {useEffect} from 'react';
 import {Link } from "react-router-dom";
 import {useSelector, useDispatch} from 'react-redux';
 import {deleteProjetoServer, fetchProjetos, selectAllProjetos} from './ProjetosSlice'
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+
+
+const useStyles = makeStyles({
+  root: {
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+  },
+});
+
 
 export default function ListagemProjeto(props){
   
@@ -11,6 +30,7 @@ export default function ListagemProjeto(props){
 
   const dispatch = useDispatch();
 
+  const classes = useStyles();
 
   function handleClickExcluirProjeto(id){
         dispatch(deleteProjetoServer(id));
@@ -36,8 +56,8 @@ export default function ListagemProjeto(props){
 
   return (
             <>
-              <div id="lbl_titulo_pagina">Listagem de Projetos</div><br/>
-              <Link to="/projetos/novo"><button id="Novo Projeto" name="btn_novo_projeto">Novo Projeto</button></Link><br/><br/>
+              <div id="lbl_titulo_pagina"><Typography variant="h3">Listagem de Projetos</Typography></div><br/>
+              <Button className={classes.root} id="Novo Projeto" name="btn_novo_projeto" to="/projetos/novo" component={Link}>Novo Projeto</Button><br/><br/>
               {tabelaProjetos}
             </>
         );
@@ -48,7 +68,7 @@ export const LinhaProjeto = (props) => {
       return(
           <tr><td><Link to={`/projetos/${props.projeto.id}`}><button>{props.projeto.nome}</button></Link></td>
               <td>{props.projeto.sigla}</td>
-              <td><button id="excluir_projeto" name="excluir_projeto" onClick={() => props.onClickExcluirProjeto(props.projeto.id)}>X</button></td>
+              <td><IconButton id="excluir_projeto" name="excluir_projeto" onClick={() => props.onClickExcluirProjeto(props.projeto.id)}><DeleteIcon /></IconButton></td>
           </tr>
       );
     }else{

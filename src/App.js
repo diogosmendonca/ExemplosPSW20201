@@ -1,5 +1,5 @@
 import React from 'react';
-import ListagemProjeto from './projetos/TabelaProjetos';
+import ListagemProjeto from './projetos/ListagemProjeto';
 import FormProjeto from './projetos/FormProjeto';
 import {store} from './store';
 import { Provider } from 'react-redux'

@@ -1,14 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import {LinhaProjeto, TabelaProjetos} from './TabelaProjetos';
+import LinhaProjeto from './LinhaProjeto';
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 import '@testing-library/jest-dom/extend-expect'
 import { MemoryRouter } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
 
-//######## LINHA PROJETO UNITÁRIO #################################
-describe('LinhaProjeto', function () {
+describe('LinhaProjeto unit', function () {
 
     test('props vazio', () => {
         render(<table><tbody><LinhaProjeto /></tbody></table>);
@@ -43,9 +42,9 @@ describe('LinhaProjeto', function () {
     test('projeto click excluir', () => {
         const mockExcluirHandler = jest.fn();
         let projeto = {id: 1, nome: 'Projeto 1'};
-        render(<table><tbody><LinhaProjeto projeto={projeto} onClickExcluirProjeto={mockExcluirHandler} /></tbody></table>, { wrapper: MemoryRouter });
+        let dom = render(<table><tbody><LinhaProjeto projeto={projeto} onClickExcluirProjeto={mockExcluirHandler} /></tbody></table>, { wrapper: MemoryRouter });
         const leftClick = { button: 0 };
-        userEvent.click(screen.getByText(/X/i), leftClick);
+        userEvent.click(dom.container.querySelector("#excluir_projeto"), leftClick);
         expect(mockExcluirHandler).toHaveBeenCalledTimes(1);
         expect(mockExcluirHandler).toHaveBeenCalledWith(1);
     });

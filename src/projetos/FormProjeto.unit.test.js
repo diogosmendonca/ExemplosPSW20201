@@ -92,9 +92,8 @@ describe("ListagemProjeto unit", () => {
 
     test('Update válido', async () => {
         let projetoId = 1;
-        const history = createMemoryHistory();
         let {container} = render(
-            <MemoryRouter history={history} initialEntries={[`/projetos/${projetoId}`]}>
+            <MemoryRouter initialEntries={[`/projetos/${projetoId}`]}>
                 <Route path="/projetos/:id">
                     <FormProjeto/>
                 </Route>
@@ -114,7 +113,6 @@ describe("ListagemProjeto unit", () => {
         });
         
         expect(updateProjetoServer).toHaveBeenCalledTimes(1);
-        expect(history.location.pathname).toBe('/');
         
     });
 

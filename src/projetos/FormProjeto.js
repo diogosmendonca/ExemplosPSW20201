@@ -39,20 +39,26 @@ export default function FormProjeto(props){
         
         history.push('/projetos');
     }
+    let pageTitle;
+    if(actionType === 'projetos/addProjeto'){
+        pageTitle = 'Novo Projeto';
+    }else{
+        pageTitle = 'Alteração de Projeto';
+    }
     
     return(<>
-            <h1>Novo Projeto</h1>
+            <h1>{pageTitle}</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
             <label>
                 Nome:
-                <input type="text" name="nome"  defaultValue={projetoOnLoad.nome} ref={register} />
-                &nbsp;<span>{errors.nome?.message}</span>
+                <input type="text" name="nome" id="nome"  defaultValue={projetoOnLoad.nome} ref={register} />
+                &nbsp;<span id="nome_err_msg">{errors.nome?.message}</span>
             </label>
             <br/>
             <label>
                 Sigla:
-                <input type="text" name="sigla"  defaultValue={projetoOnLoad.sigla} ref={register} />
-                &nbsp;<span>{errors.sigla?.message}</span>
+                <input type="text" name="sigla" id="sigla"  defaultValue={projetoOnLoad.sigla} ref={register} />
+                &nbsp;<span id="sigla_err_msg">{errors.sigla?.message}</span>
             </label>
             <br/>
             <br/>   

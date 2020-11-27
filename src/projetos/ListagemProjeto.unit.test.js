@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import ListagemProjeto from './ListagemProjeto'
-import {useSelector, useDispatch} from 'react-redux'
+import {useSelector} from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
-import {deleteProjetoServer, fetchProjetos, selectAllProjetos} from './ProjetosSlice'
+import {deleteProjetoServer, fetchProjetos} from './ProjetosSlice'
 import TabelaProjetos from './TabelaProjetos'
 import userEvent from '@testing-library/user-event'
 

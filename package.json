@@ -24,7 +24,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen --coverage --watchAll",
     "eject": "react-scripts eject",
     "json-server": "json-server --watch shared/projetos.json --port 3004 --delay 2000"
   },
@@ -44,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "jest-environment-jsdom-sixteen": "^1.0.3",
     "redux-mock-store": "^1.5.4"
   }
 }

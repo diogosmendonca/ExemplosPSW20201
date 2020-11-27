@@ -5,9 +5,10 @@ import {useSelector, useDispatch} from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import {deleteProjetoServer, fetchProjetos, selectAllProjetos} from './ProjetosSlice'
 import TabelaProjetos from './TabelaProjetos'
+import userEvent from '@testing-library/user-event'
 
 // Mocking tabela projetos
-jest.mock('./TabelaProjetos', () => jest.fn(() => (<div id="projetos">Projetos</div>)));
+jest.mock('./TabelaProjetos', () => jest.fn((props) => (<div id="projetos" onClick={() => props?.onClickExcluirProjeto(1) }>Projetos</div>)));
 
 // Mocking redux module
 jest.mock("react-redux", () => ({
@@ -33,6 +34,8 @@ jest.mock("./ProjetosSlice", () => ({
     fetchProjetos: jest.fn()
 }));
 
+//necessário para testar o comportamento do setTimeout
+jest.useFakeTimers()
 
 describe("ListagemProjeto unit", () => {
 
@@ -46,6 +49,7 @@ describe("ListagemProjeto unit", () => {
       useSelector.mockClear();
       fetchProjetos.mockClear();
       TabelaProjetos.mockClear();
+      jest.clearAllTimers()
     });
 
     test('not_loaded', () => {
@@ -76,8 +80,7 @@ describe("ListagemProjeto unit", () => {
 
 
   const failedStateTest = () => {
-    //necessário para testar o comportamento do setTimeout
-    jest.useFakeTimers()
+    
 
     const { container } = render(<ListagemProjeto />, { wrapper: MemoryRouter });
     //carrega a página
@@ -87,7 +90,7 @@ describe("ListagemProjeto unit", () => {
     expect(container.querySelector('#projetos').innerHTML).toContain('Alguma msg de erro');
     
     //busca os projetos depois de 5 segundos
-    jest.runAllTimers(); //avança no tempo
+    jest.advanceTimersByTime(5000); //avança no tempo
     expect(fetchProjetos).toHaveBeenCalledTimes(1);
     expect(TabelaProjetos).toHaveBeenCalledTimes(0);
   }
@@ -136,6 +139,28 @@ test('not existent state', () => {
   mockAppState.projetos.status = 'not existent state';
   mockAppState.projetos.error = 'Alguma msg de erro';
   failedStateTest();
+});
+
+test('call handleClickExcluirProjeto', () => {
+  mockAppState.projetos.status = 'loaded';
+  mockAppState.projetos.error = '';
+  const { container } = render(<ListagemProjeto />, { wrapper: MemoryRouter });
+  //carrega a página
+  expect(container.querySelector('#lbl_titulo_pagina')).toBeInTheDocument();
+  
+  //não carrega a tabela, pois loaded
+  expect(TabelaProjetos).toHaveBeenCalledTimes(1);
+  expect(container.querySelector('#projetos')).toBeInTheDocument();
+  expect(container.querySelector('#projetos').innerHTML).toContain('Projetos');
+  
+  //não busca os projetos
+  expect(fetchProjetos).toHaveBeenCalledTimes(0);
+
+  const leftClick = { button: 0 };
+  userEvent.click(container.querySelector("#projetos"), leftClick);
+  expect(deleteProjetoServer).toHaveBeenCalledTimes(1);
+  expect(deleteProjetoServer).toHaveBeenCalledWith(1);
+
 });
 
 

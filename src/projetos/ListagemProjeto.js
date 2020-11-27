@@ -37,18 +37,21 @@ const useStyles = makeStyles({
      useEffect(() => {
           if (status === 'not_loaded' ) {
               dispatch(fetchProjetos())
-          }else if(status === 'failed'){
+          }else if(status === 'failed' || !(status in ['not_loaded', 'loading', 'loaded', 'saved', 'deleted'])){
               setTimeout(()=>dispatch(fetchProjetos()), 5000);
           }
       }, [status, dispatch])
       
     
-    let tabelaProjetos = '';
+    let tabelaProjetos;
     if(status === 'loaded' || status === 'saved' || status === 'deleted'){
       tabelaProjetos = <TabelaProjetos projetos={projetos} onClickExcluirProjeto={handleClickExcluirProjeto} />;
     }else if(status === 'loading'){
       tabelaProjetos = <div id="projetos">Carregando os projetos...</div>;
-    }else if(status === 'failed'){
+    }else if(status === 'not_loaded'){
+      tabelaProjetos = '';
+    }else{
+      //status === 'failed' or any other
       tabelaProjetos = <div id="projetos">Error: {error}</div>;
     }
   

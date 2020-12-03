@@ -7,6 +7,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TabelaProjetos from './TabelaProjetos';
 
+/**
+ * @module projetos/ListagemProjetos
+ */
+
 const useStyles = makeStyles({
     root: {
       background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -20,7 +24,11 @@ const useStyles = makeStyles({
   });
   
   
-  export default function ListagemProjeto(props){
+  /**
+   * Renderiza a tela de Listagem de projetos.
+   * 
+   */
+  function ListagemProjeto(props){
     
     const projetos = useSelector(selectAllProjetos)
     const status = useSelector(state => state.projetos.status);
@@ -37,7 +45,7 @@ const useStyles = makeStyles({
      useEffect(() => {
           if (status === 'not_loaded' ) {
               dispatch(fetchProjetos())
-          }else if(status === 'failed' || !(status in ['not_loaded', 'loading', 'loaded', 'saved', 'deleted'])){
+          }else if(status === 'failed'){
               setTimeout(()=>dispatch(fetchProjetos()), 5000);
           }
       }, [status, dispatch])
@@ -64,4 +72,5 @@ const useStyles = makeStyles({
           );
   }
   
+  export default ListagemProjeto;
   

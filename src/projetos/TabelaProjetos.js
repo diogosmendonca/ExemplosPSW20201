@@ -1,7 +1,18 @@
 import React from 'react';
 import LinhaProjeto from './LinhaProjeto';
 
-export default function TabelaProjetos(props){
+/**
+ * @module projetos/TabelaProjetos
+ */
+
+
+/**
+ * Renderiza a tabela de projetos.
+ * 
+ * @param {object} props.projetos - Lista de projetos para ser exibida na tabela.
+ * 
+ */
+function TabelaProjetos(props){
     if(props != null && props.projetos != null && props.projetos.length > 0){
       return(
           <table id="projetos" border="1">
@@ -16,3 +27,4 @@ export default function TabelaProjetos(props){
     }
 }
 
+export default TabelaProjetos;

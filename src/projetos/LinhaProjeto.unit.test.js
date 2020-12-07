@@ -44,7 +44,7 @@ describe('LinhaProjeto unit', function () {
         let projeto = {id: 1, nome: 'Projeto 1'};
         let dom = render(<table><tbody><LinhaProjeto projeto={projeto} onClickExcluirProjeto={mockExcluirHandler} /></tbody></table>, { wrapper: MemoryRouter });
         const leftClick = { button: 0 };
-        userEvent.click(dom.container.querySelector("#excluir_projeto"), leftClick);
+        userEvent.click(dom.container.querySelector("#excluir_projeto_1"), leftClick);
         expect(mockExcluirHandler).toHaveBeenCalledTimes(1);
         expect(mockExcluirHandler).toHaveBeenCalledWith(1);
     });

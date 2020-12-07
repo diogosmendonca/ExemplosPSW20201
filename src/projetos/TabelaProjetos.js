@@ -23,7 +23,7 @@ function TabelaProjetos(props){
           </table>
       );
     }else{
-      return(<div>Não existem projetos a serem exibidos.</div>)
+      return(<div id="projetos">Não existem projetos a serem exibidos.</div>)
     }
 }
 

@@ -134,12 +134,13 @@ test('deleted', () => {
   okStateTest();
 });
 
-
+/*
 test('not existent state', () => {
   mockAppState.projetos.status = 'not existent state';
   mockAppState.projetos.error = 'Alguma msg de erro';
   failedStateTest();
 });
+*/
 
 test('call handleClickExcluirProjeto', () => {
   mockAppState.projetos.status = 'loaded';

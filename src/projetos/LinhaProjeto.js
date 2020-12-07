@@ -25,7 +25,7 @@ function LinhaProjeto(props){
         return(
             <tr><td><Link to={`/projetos/${props.projeto.id}`}><button>{props.projeto.nome}</button></Link></td>
                 <td>{props.projeto.sigla}</td>
-                <td><IconButton id="excluir_projeto" name="excluir_projeto" onClick={() => props.onClickExcluirProjeto(props.projeto.id)}><DeleteIcon /></IconButton></td>
+                <td><IconButton id={`excluir_projeto_${props.projeto.id}`} name="excluir_projeto" onClick={() => props.onClickExcluirProjeto(props.projeto.id)}><DeleteIcon /></IconButton></td>
             </tr>
         );
     }else{

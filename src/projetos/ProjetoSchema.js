@@ -5,7 +5,7 @@ setLocale(ptForm)
 
 export let projetoSchema = object().shape(
     {
-        id: number(),
+        id: string(),
         nome: string().required().max(30),
         sigla: string().required().max(5)
     }

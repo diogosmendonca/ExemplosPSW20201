@@ -13,7 +13,7 @@ export default function FormProjeto(props){
     const history = useHistory();
     const dispatch = useDispatch()
     let { id } = useParams();
-    id = parseInt(id);
+    
     const projetoFound = useSelector(state => selectProjetosById(state, id))
     const { register, handleSubmit, errors } = useForm({
             resolver: yupResolver(projetoSchema)

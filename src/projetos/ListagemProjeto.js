@@ -46,7 +46,7 @@ const useStyles = makeStyles({
           if (status === 'not_loaded' ) {
               dispatch(fetchProjetos())
           }else if(status === 'failed'){
-              setTimeout(()=>dispatch(fetchProjetos()), 5000);
+              //setTimeout(()=>dispatch(fetchProjetos()), 5000);
           }
       }, [status, dispatch])
       

@@ -1,6 +1,7 @@
 import React from 'react';
 import ListagemProjeto from './projetos/ListagemProjeto';
 import FormProjeto from './projetos/FormProjeto';
+import LoginForm from './users/LoginForm';
 import {store} from './store';
 import { Provider } from 'react-redux'
 import {
@@ -51,7 +52,7 @@ const App = (props) => {
                         <Route path="/projetos/novo"><FormProjeto /></Route>
                         <Route path="/projetos/:id"><FormProjeto /></Route>
                         <Route path="/projetos"><ListagemProjeto /></Route>
-                        <Route path="/"><ListagemProjeto /></Route>
+                        <Route path="/"><LoginForm /></Route>
                       </Switch>
                   </div>
               </Router>

@@ -10,21 +10,22 @@ const initialState = projetosAdapter.getInitialState({
     /* o array projetos foi removido do state inicial, será criado pelo adapter */
 });
 
-export const fetchProjetos = createAsyncThunk('projetos/fetchProjetos', async () => {
-    return await httpGet(`${baseUrl}/projetos`);
+export const fetchProjetos = createAsyncThunk('projetos/fetchProjetos', async (_, {getState}) => {
+    console.log(getState());
+    return await httpGet(`${baseUrl}/projetos`, {headers: {Authorization: 'Bearer ' + getState().logins.currentToken}});
 });
 
-export const deleteProjetoServer = createAsyncThunk('projetos/deleteProjetoServer', async (idProjeto) => {
-    await httpDelete(`${baseUrl}/projetos/${idProjeto}`);
+export const deleteProjetoServer = createAsyncThunk('projetos/deleteProjetoServer', async (idProjeto, {getState}) => {
+    await httpDelete(`${baseUrl}/projetos/${idProjeto}`, {headers: {Authorization: 'Bearer ' + getState().logins.currentToken}});
     return idProjeto;
 });
 
-export const addProjetoServer = createAsyncThunk('projetos/addProjetoServer', async (projeto) => {
-    return await httpPost(`${baseUrl}/projetos`, projeto);
+export const addProjetoServer = createAsyncThunk('projetos/addProjetoServer', async (projeto, {getState}) => {
+    return await httpPost(`${baseUrl}/projetos`, projeto, {headers: {Authorization: 'Bearer ' + getState().logins.currentToken}});
 });
 
-export const updateProjetoServer = createAsyncThunk('projetos/updateProjetoServer', async (projeto) => {
-    return await httpPut(`${baseUrl}/projetos/${projeto.id}`, projeto);
+export const updateProjetoServer = createAsyncThunk('projetos/updateProjetoServer', async (projeto, {getState}) => {
+    return await httpPut(`${baseUrl}/projetos/${projeto.id}`, projeto, {headers: {Authorization: 'Bearer ' + getState().logins.currentToken}});
 });
 
 export const projetosSlice = createSlice({
